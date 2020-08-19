@@ -1,51 +1,95 @@
 /**
  * Layout component that queries for data
- * with Gatsby's useStaticQuery component
+ * with Gatsby's StaticQuery component
  *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
+ * See: https://www.gatsbyjs.org/docs/static-query/
  */
 
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 
+import { Container, Icon } from 'rsuite'
 import Header from "./header"
-import "./layout.css"
+import "./layout.scss"
 
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
+const Layout = ({ children, siteTitle, siteLogo, contact, connect, headerBreakpoint }) => {
+  const styles = {
+    main: {
+      minheight: 'calc(100vh - 185px)',
+    },
+    footer: {
+      width: "100%",
+      height: '200px',
+      position: 'relative',
+      display: "flex",
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      backgroundColor: 'black',
+      color: 'white',
+    },
+    linkContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    link: {
+      margin: '0 15px',
+    },
+    span: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    contactLine: {
+      marginBottom: '10px'
     }
-  `)
-
+  }
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
+    <Container>
+      <Header siteTitle={siteTitle} logo={siteLogo} breakpoint={headerBreakpoint} />
+      <main style={styles.main}>{children}</main>
+      <footer style={styles.footer}>
+        {contact
+          ? <div>
+            <h6 style={styles.contactLine}>{contact.address1}</h6>
+            <h6 style={styles.contactLine}>{contact.address2}</h6>
+            <h6 style={styles.contactLine}>{`${contact.city} ${contact.region}, ${contact.postal_code}`}</h6>
+            <h6 style={styles.contactLine}>{`Phone: ${contact.country_code ? contact.country_code : null} ${contact.phone_number}`}</h6>
+            <h6 style={styles.contactLine}>{`Email: ${contact.email}`}</h6>
+          </div>
+          : null
+        }
+        <span style={styles.span}>
+          © {new Date().getFullYear()}, Built with <a href="https://www.gatsbyjs.org">&nbsp;Gatsby</a>
+          <a style={{ height: '35px', margin: '0 20px' }} href="https://cosmicjs.com/add-bucket?import_bucket=5cbf745a10d5c22da1f9b3e2"><img src="https://s3-us-west-2.amazonaws.com/cosmicjs/51fe54d0-4f6e-11e9-9f32-8d001da69630-powered-by-cosmicjs.svg" /></a>
+        </span>
+        {connect
+          ? <div style={styles.linkContainer}>
+            {connect.map(link => {
+              return (
+                <a key={link.node.title} href={`https://${link.node.metadata.url}`} style={styles.link}>
+                  <Icon size="3x" icon={link.node.title} />
+                </a>
+              )
+            })}
+          </div>
+          : null
+        }
+      </footer>
+    </Container>
   )
 }
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  siteTitle: PropTypes.string,
+  siteLogo: PropTypes.object,
+  contact: PropTypes.object,
+  connect: PropTypes.array,
+  headerBreakpoint: PropTypes.number,
 }
 
 export default Layout
