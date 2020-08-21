@@ -118,8 +118,12 @@ class IndexPage extends React.Component {
         overflowX: 'auto',
         color: 'black',
       },
+      serviceIcon: {
+        marginBottom: '.5rem',
+      },
       serviceName: {
         fontSize: '1.2rem',
+        marginBottom: '.5rem',
       },
       serviceDescription: {
         fontSize: '0.9rem',
@@ -183,7 +187,7 @@ class IndexPage extends React.Component {
                 <div className="wrapper-content services">
                   {serviceData.map(service => (
                     <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
-                      <Icon icon={service.node.metadata.icon} iconSize={Icon.SIZE_LARGE} />
+                      <Icon style={styles.serviceIcon} icon={service.node.metadata.icon} iconSize={32} />
                       <h5 style={styles.serviceName}>{service.node.title}</h5>
                       <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
                     </Link>

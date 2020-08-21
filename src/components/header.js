@@ -57,7 +57,7 @@ class Header extends React.Component {
         height: '100%',
       },
       link: {
-        color: `#728f99`,
+        color: `var(--jrm-light-blue)`,
         textShadow: '0px 0px 1px #ffffff',
         margin: '0 0 0 30px',
         textDecoration: `none`,
@@ -69,9 +69,9 @@ class Header extends React.Component {
       }
     }
     if (!this.state.scrollTop) {
-      styles.container.background = `#000000`
-      styles.container.color = `#ffffff`
-      styles.link.color = `#ffffff`
+      styles.container.background = `var(--jrm-dark-blue)`
+      styles.container.color = `var(jrm-light-blue)`
+      styles.link.color = `var(jrm-light-blue)`
       styles.link.textShadow = 'none'
     } else {
       styles.container.background = `rgba(0, 0, 0, .5)`
@@ -82,9 +82,9 @@ class Header extends React.Component {
       <Navbar style={styles.container}>
         <Navbar.Header style={styles.navheader}>
           {
-          logo 
-            ? <Imgix src={logo.imgix_url} style={styles.logo} sizes="5vw"/> 
-            : <h5>JM</h5>
+            logo 
+              ? <Imgix src={logo.imgix_url} style={styles.logo} sizes="5vw"/> 
+              : <h5>JM</h5>
           }
           <h1>
             <Link to="/" style={styles.link}>
