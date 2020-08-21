@@ -1,3 +1,11 @@
+import React from "react"
+import PropTypes from "prop-types"
+import { Container } from "rsuite"
+import { Icon } from "@blueprintjs/core"
+
+import Header from "./header"
+import "./layout.scss"
+
 /**
  * Layout component that queries for data
  * with Gatsby's StaticQuery component
@@ -5,17 +13,10 @@
  * See: https://www.gatsbyjs.org/docs/static-query/
  */
 
-import React from "react"
-import PropTypes from "prop-types"
-
-import { Container, Icon } from 'rsuite'
-import Header from "./header"
-import "./layout.scss"
-
 const Layout = ({ children, siteTitle, siteLogo, contact, connect, headerBreakpoint }) => {
   const styles = {
     main: {
-      minheight: 'calc(100vh - 185px)',
+      // minheight: 'calc(100vh - 185px)',
     },
     footer: {
       width: "100%",

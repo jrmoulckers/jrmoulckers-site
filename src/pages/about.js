@@ -84,7 +84,7 @@ class About extends React.Component {
       }
     }
     if (pageData.splash_image) {
-      styles.pageHeader.background = `url(${pageData.splash_image.url})`
+      styles.pageHeader.background = `url(${pageData.splash_image.imgix_url}?q=100&auto=format,compress)`
       styles.pageHeader.backgroundSize = 'cover'
       styles.pageHeader.backgroundPosition = 'center'
     }
@@ -133,7 +133,7 @@ class About extends React.Component {
                 <div key={person.node.title} style={styles.person}>
                   <div
                     style={{
-                      background: `url(${person.node.metadata.image.url})`,
+                      background: `url(${person.node.metadata.image.imgix_url}?q=100&auto=format,compress)`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                       marginBottom: '14px',
@@ -158,7 +158,7 @@ export const query = graphql`
     cosmicjsPages(slug: { eq: "about" }) {
       metadata {
         splash_image {
-          url
+          imgix_url
         }
         splash_phrase
         intro_description
@@ -171,7 +171,7 @@ export const query = graphql`
           title
           metadata {
             image {
-              url
+              imgix_url
             }
             job_title
           }
@@ -215,7 +215,7 @@ export const query = graphql`
       metadata {
         site_title
         site_logo {
-          url
+          imgix_url
         }
       }
     }

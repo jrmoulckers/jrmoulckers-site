@@ -16,25 +16,24 @@ class ProjectDisplay extends React.Component {
     let styles = {
       container: {
         margin: '10px 0 0 10px',
-        minWidth: '400px',
-        minHeight: '400px',
-        height: '400px',
+        minWidth: '200px',
+        minHeight: '200px',
+        height: '200px',
         overflow: 'hidden',
         textDecoration: 'none',
       },
       details: {
-        height: '400px',
-        width: '400px',
+        height: '200px',
+        width: '200px',
         padding: '30px',
         opacity: '0',
         color: '#d3d3d3',
         background: 'rgba(0, 0, 0, 0.6)',
         position: 'relative',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        overflowY: 'auto',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflowY: 'none',
         transition: '0.3s ease-in-out'
       },
       title: {
@@ -45,8 +44,8 @@ class ProjectDisplay extends React.Component {
         fontSize: '1rem',
       }
     }
-    if (this.props.image) {
-      styles.container.background = `url(${this.props.image})`
+    if (this.props.imgix_url) {
+      styles.container.background = `url(${this.props.imgix_url}?q=100&auto=format,compress)`
       styles.container.backgroundSize = 'cover'
       styles.container.backgroundPosition = 'center'
     }
@@ -67,7 +66,7 @@ class ProjectDisplay extends React.Component {
       >
         <div style={styles.details}>
           <h5 style={styles.title}>{this.props.title}</h5>
-          <p style={styles.description}>{this.props.description}</p>
+          <p style={styles.summary}>{this.props.summary}</p>
         </div>
       </Link>
     )
@@ -84,7 +83,8 @@ class ProjectDisplay extends React.Component {
 ProjectDisplay.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  image: PropTypes.string,
+  summary: PropTypes.string,
+  imgix_url: PropTypes.string,
   size: PropTypes.string,
 }
 

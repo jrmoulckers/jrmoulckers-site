@@ -63,8 +63,8 @@ class Contact extends Component {
                 <div className="contact-container">
                 <div className="imageFilter" />
                 <div style={styles.header}>
-                    <h2 style={styles.title}>Contact Us</h2>
-                    <p style={styles.description}>Fill out the form below if you would like to get a hold of us.</p>
+                    <h2 style={styles.title}>Contact Me</h2>
+                    <p style={styles.description}>Fill out the form below if you would like to get in touch with me!</p>
                 </div>
                     <form style={styles.contactForm} onSubmit={this.handleContactForm}>
                         <Collapse in={this.state.messageError}>

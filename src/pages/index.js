@@ -1,7 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link, graphql } from "gatsby"
-import { Animation, Icon, Input, Button, Message } from 'rsuite'
+import { Icon } from "@blueprintjs/core"
+import { Button, Input, Message, Animation } from "rsuite"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -52,7 +53,7 @@ class IndexPage extends React.Component {
 
   render() {
     const pageData = this.props.data.cosmicjsPages.metadata
-    //const siteData = this.props.data.cosmicjsSettings.metadata
+    const siteData = this.props.data.cosmicjsSettings.metadata
     const contactData = this.props.data.cosmicjsContacts.metadata
     const connectData = this.props.data.allCosmicjsConnects.edges
     const peopleData = this.props.data.allCosmicjsPeople.edges
@@ -84,15 +85,17 @@ class IndexPage extends React.Component {
       header: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
+        margin: '50px 0',
       },
       title: {
         paddingRight: '50px',
-        marginRight: '100px',
+        margin: 0,
         borderRight: 'thin solid black'
       },
       description: {
+        paddingLeft: '50px',
         maxWidth: '400px',
         fontSize: '1.25rem',
         margin: '0',
@@ -134,7 +137,9 @@ class IndexPage extends React.Component {
       personName: {
         marginTop: '0',
         color: 'black',
-        fontSize: '1rem'
+        fontSize: '1rem',
+        height: '2rem',
+        textAlign: 'center',
       },
       personTitle: {
         color: 'grey',
@@ -142,131 +147,131 @@ class IndexPage extends React.Component {
       }
     }
     if (pageData.splash_image) {
-      styles.splash.background = `url(${pageData.splash_image.url})`
+      styles.splash.background = `url(${pageData.splash_image.imgix_url}?q=100&auto=format,compress)`
       styles.splash.backgroundSize = `cover`
       styles.splash.backgroundRepeat = 'no-repeat'
       styles.splash.backgroundPosition = 'center'
     }
     return (
-      <Layout
-        siteTitle= "Hello There" //{siteData.site_title}
-        siteLogo= {{ url: "../images/jrm_brand_logo.png" }}//{siteData.site_logo}
-        contact={contactData}
-        connect={connectData}
-        headerBreakpoint={headerBreakpoint}
-      >
-        <SEO title="Home" keywords={[`cosmic js`, `application`, `react`]} />
-        <section style={styles.splash} className="section-container splash">
-          {pageData.splash_phrase
-            ? <div className="splash-phrase" style={styles.splashPhrase}>
-              <h2 style={{ fontSize: '2.5rem' }}>{pageData.splash_phrase}</h2>
-            </div>
-            : null
-          }
-        </section>
-        <section
-          ref={el => { this.workElement = el }}
-          style={styles.work}
-          className="section-container content work"
+        <Layout
+          siteTitle= {siteData.site_title}
+          siteLogo= {siteData.site_logo}
+          contact={contactData}
+          connect={connectData}
+          headerBreakpoint={headerBreakpoint}
         >
-          <Fade in={this.state.showWork}>
-            <div className="section-wrapper">
-              <div className="section-header" style={styles.header}>
-                <h2 className="section-title" style={styles.title}>What We Do</h2>
-                <p className="people-description" style={styles.description}>{pageData.service_description}</p>
+          <SEO title="Home" keywords={[`cosmic js`, `application`, `react`]} />
+          <section style={styles.splash} className="section-container splash">
+            {pageData.splash_phrase
+              ? <div className="splash-phrase" style={styles.splashPhrase}>
+                <h2 style={{ fontSize: '2.5rem' }}>{pageData.splash_phrase}</h2>
               </div>
-              <div className="wrapper-content services">
-                {serviceData.map(service => (
-                  <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
-                    <Icon size="3x" icon={service.node.metadata.icon} />
-                    <h5 style={styles.serviceName}>{service.node.title}</h5>
-                    <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
-                  </Link>
-                ))}
-              </div>
-              <div className="wrapper-content projects">
-                {projectData.map(project => (
-                  <ProjectDisplay
-                    key={project.node.title}
-                    title={project.node.title}
-                    description={project.node.metadata.summary}
-                    image={project.node.metadata.image.url}
-                  />
-                ))}
-              </div>
-            </div>
-          </Fade>
-        </section>
-        <section
-          ref={el => { this.peopleElement = el }}
-          className="section-container content people"
-        >
-          <Fade in={this.state.showPeople}>
-            <div className="section-wrapper">
-              <div style={styles.header}>
-                <h2 className="section-title" style={styles.title}>Who We Are</h2>
-                <p style={styles.description}>{pageData.people_description}</p>
-              </div>
-              <div className="wrapper-content people">
-                {peopleData.map(person => {
-                  return (
-                    <Link key={person.node.title} to="/about" style={styles.person}>
-                      <div
-                        style={{
-                          background: `url(${person.node.metadata.image.url})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          marginBottom: '14px',
-                          width: '100%',
-                          height: '200px',
-                        }}
-                      />
-                      <h5 style={styles.personName}>{person.node.title}</h5>
-                      <h6 style={styles.personTitle}>{person.node.metadata.job_title}</h6>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          </Fade>
-        </section>
-        <section
-          ref={el => { this.contactElement = el }}
-          name="contact"
-          className="section-container content bottom contact"
-        >
-          <Fade in={this.state.showContact}>
-            <div className="contact-container">
-              <div className="imageFilter" />
-              <div style={styles.header}>
-                <h2 className="section-title" style={styles.title}>Contact Us</h2>
-                <p style={styles.description}>Fill out the form below if you would like to get a hold of us.</p>
-              </div>
-              <form style={styles.contactForm} onSubmit={this.handleContactForm}>
-                <Collapse in={this.state.messageError}>
-                  <Message type="error" title="Error" description="Please Provide a valid input to all fields" />
-                </Collapse>
-                <div style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-                  <Input name="userName" value={this.state.userName} onChange={this.handleInput} placeholder="Name" />
-                  <Input name="userEmail" value={this.state.userEmail} onChange={this.handleInput} placeholder="Email" />
+              : null
+            }
+          </section>
+          <section
+            ref={el => { this.workElement = el }}
+            style={styles.work}
+            className="section-container content work"
+          >
+            <Fade in={this.state.showWork}>
+              <div className="section-wrapper">
+                <div className="section-header" style={styles.header}>
+                  <h2 className="section-title" style={styles.title}>What I do</h2>
+                  <p className="people-description" style={styles.description}>{pageData.service_description}</p>
                 </div>
-                <Input name="messageSubject" value={this.state.messageSubject} onChange={this.handleInput} placeholder="Subject" />
-                <Input
-                  componentClass="textarea"
-                  name="userMessage"
-                  value={this.state.userMessage}
-                  onChange={this.handleInput}
-                  rows={5}
-                  placeholder="Message..."
-                />
-                <Button type="submit" appearance="ghost">
-                  Send Mail
-                </Button>
-              </form>
-            </div>
-          </Fade>
-        </section>
-      </Layout>
+                <div className="wrapper-content services">
+                  {serviceData.map(service => (
+                    <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
+                      <Icon icon={service.node.metadata.icon} iconSize={Icon.SIZE_LARGE} />
+                      <h5 style={styles.serviceName}>{service.node.title}</h5>
+                      <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
+                    </Link>
+                  ))}
+                </div>
+                <div className="wrapper-content projects">
+                  {projectData.map(project => (
+                    <ProjectDisplay
+                      key={project.node.title}
+                      title={project.node.title}
+                      description={project.node.metadata.summary}
+                      imgix_url={project.node.metadata.image.imgix_url}
+                    />
+                  ))}
+                </div>
+              </div>
+            </Fade>
+          </section>
+          <section
+            ref={el => { this.peopleElement = el }}
+            className="section-container content people"
+          >
+            <Fade in={this.state.showPeople}>
+              <div className="section-wrapper">
+                <div style={styles.header}>
+                  <h2 className="section-title" style={styles.title}>Who We Are</h2>
+                  <p style={styles.description}>{pageData.people_description}</p>
+                </div>
+                <div className="wrapper-content people">
+                  {peopleData.map(person => {
+                    return (
+                      <Link key={person.node.title} to="/about" style={styles.person}>
+                        <div
+                          style={{
+                            background: `url(${person.node.metadata.image.imgix_url}?q=100&auto=format,compress)`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            marginBottom: '14px',
+                            width: '100%',
+                            height: '200px',
+                          }}
+                        />
+                        <h5 style={styles.personName}>{person.node.title}</h5>
+                        <h6 style={styles.personTitle}>{person.node.metadata.job_title}</h6>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            </Fade>
+          </section>
+          <section
+            ref={el => { this.contactElement = el }}
+            name="contact"
+            className="section-container content bottom contact"
+          >
+            <Fade in={this.state.showContact}>
+              <div className="contact-container">
+                <div className="imageFilter" />
+                <div style={styles.header}>
+                  <h2 className="section-title" style={styles.title}>Contact Me</h2>
+                  <p style={styles.description}>Fill out the form below if you would like to get in touch with me!</p>
+                </div>
+                <form style={styles.contactForm} onSubmit={this.handleContactForm}>
+                  <Collapse in={this.state.messageError}>
+                    <Message type="error" title="Error: Populate All Fields" description="Please provide input to all fields..." />
+                  </Collapse>
+                  <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Input name="userName" value={this.state.userName} onChange={this.handleInput} placeholder="Name" />
+                    <Input name="userEmail" value={this.state.userEmail} onChange={this.handleInput} placeholder="Email" style={{marginLeft: "15px"}} />
+                  </div>
+                  <Input name="messageSubject" value={this.state.messageSubject} onChange={this.handleInput} placeholder="Subject" />
+                  <Input
+                    componentClass="textarea"
+                    name="userMessage"
+                    value={this.state.userMessage}
+                    onChange={this.handleInput}
+                    rows={5}
+                    placeholder="Message..."
+                  />
+                  <Button type="submit" appearance="ghost">
+                    Send Mail
+                  </Button>
+                </form>
+              </div>
+            </Fade>
+          </section>
+        </Layout>
     )
   }
 
@@ -279,18 +284,19 @@ class IndexPage extends React.Component {
   }
 
   handleScroll() {
-    if (window.scrollY >= (window.innerHeight / 3) + 100) {
+    const yFocus = window.scrollY + window.innerHeight / 3
+    if (yFocus >= window.innerHeight / 2) {
       this.setState({ showWork: true })
     } else {
       this.setState({ showWork: false })
     }
-    if (window.scrollY >= ((window.innerHeight + this.state.workHeight) - (window.innerHeight / 3))) {
-      this.setState({ showPeople: true, showWork: false })
+    if (yFocus >= (window.innerHeight + this.state.workHeight)) {
+      this.setState({ showPeople: true })
     } else {
       this.setState({ showPeople: false })
-    }
-    if (window.scrollY >= ((window.innerHeight + this.state.workHeight + this.state.peopleHeight) - (window.innerHeight / 3))) {
-      this.setState({ showContact: true, showPeople: false })
+    }    
+    if (yFocus >= (window.innerHeight + this.state.workHeight + this.state.peopleHeight)) {
+      this.setState({ showContact: true })
     } else {
       this.setState({ showContact: false })
     }
@@ -323,7 +329,7 @@ query Index {
   cosmicjsPages(slug: { eq: "home" }) {
     metadata {
       splash_image {
-        url
+        imgix_url
       }
       splash_phrase
       contact_email
@@ -337,7 +343,7 @@ query Index {
         title
         metadata {
           image {
-            url
+            imgix_url
           }
           job_title
         }
@@ -363,7 +369,7 @@ query Index {
         metadata {
           date
           image {
-            url
+            imgix_url
           }
           gallery
           summary
@@ -394,11 +400,11 @@ query Index {
       phone_number
     }
   }
-  cosmicjsSettings(slug: { eq: "site-data" }) {
+  cosmicjsSettings(slug: {eq: "site-data"}) {
     metadata {
       site_title
       site_logo {
-        url
+        imgix_url
       }
     }
   }

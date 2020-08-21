@@ -6,6 +6,7 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import { graphql } from "gatsby"
+import Imgix from "react-imgix"
 
 import { Icon, IconButton } from 'rsuite'
 import Layout from "../components/layout"
@@ -133,7 +134,7 @@ class Work extends React.Component {
       },
     }
     if (pageData.splash_image) {
-      styles.pageHeader.background = `url(${pageData.splash_image.url})`
+      styles.pageHeader.background = `url(${pageData.splash_image.imgix_url}?q=100&auto=format,compress)`
       styles.pageHeader.backgroundSize = 'cover'
       styles.pageHeader.backgroundPosition = 'center'
     }
@@ -149,7 +150,7 @@ class Work extends React.Component {
         <section className="page-container work">
           <header className="page-header work" style={styles.pageHeader}>
             <div className="header-filter">
-              <h3>What We Do</h3>
+              <h3>What I Do</h3>
               {pageData.splash_phrase
                 ? <p className="page-header-description">{pageData.splash_phrase}</p>
                 : null
@@ -194,7 +195,7 @@ class Work extends React.Component {
               {clientData.map(client => (
                 <a key={client.node.title} style={styles.clientItem} href={`https://${client.node.metadata.url}`}>
                   <p>{client.node.title}</p>
-                  <img src={client.node.metadata.image.url} alt={client.node.title} style={styles.clientImage} />
+                  <Imgix src={client.node.metadata.image.imgix_url} alt={client.node.title} style={styles.clientImage} sizes="20vw"/> 
                 </a>
               ))}
             </div>
@@ -214,7 +215,7 @@ query Work {
     cosmicjsPages(slug: { eq: "work" }) {
       metadata {
         splash_image {
-          url
+          imgix_url
         }
         splash_phrase
         intro_summary
@@ -240,7 +241,7 @@ query Work {
           metadata {
             url
             image {
-              url
+              imgix_url
             }
           }
         }
@@ -272,7 +273,7 @@ query Work {
       metadata {
         site_title
         site_logo {
-          url
+          imgix_url
         }
       }
     }

@@ -624,7 +624,7 @@ html {
     justify-content: center;
   
     input, textarea, button {
-      margin: 15px 0 0 15px;
+      margin: 15px 0 0 0;
     }
   }
   .section-container.medium {
@@ -646,6 +646,7 @@ html {
     max-height: 60vh;
   }
   .content {
+    min-height: 0;
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
@@ -690,6 +691,11 @@ html {
     margin-left: calc(-37.5vw + 480px);
     justify-content: center;
   }
+  .wrapper-content.people {
+    justify-content: center;
+    align-items: flex-start;
+  }
+
   .section-title {
     font-size: 2.5rem;
     margin: 50px;

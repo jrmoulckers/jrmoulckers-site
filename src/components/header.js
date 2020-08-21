@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import { Navbar, Nav } from "rsuite"
+import Imgix from "react-imgix"
 
 class Header extends React.Component {
   constructor() {
@@ -41,12 +42,12 @@ class Header extends React.Component {
         position: 'fixed',
         width: '100%',
         zIndex: 100,
-        background: 'none',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        transition: '0.75s ease-in-out'
+        transition: '0.75s ease-in-out',
+        background: 'rgba(0, 0, 0, .5)',
       },
       navheader: {
         display: 'flex',
@@ -72,13 +73,19 @@ class Header extends React.Component {
       styles.container.color = `#ffffff`
       styles.link.color = `#ffffff`
       styles.link.textShadow = 'none'
+    } else {
+      styles.container.background = `rgba(0, 0, 0, .5)`
     }
 
     const { siteTitle, logo } = this.props
     return (
       <Navbar style={styles.container}>
         <Navbar.Header style={styles.navheader}>
-          {logo ? <img src={logo.url} style={styles.logo} /> : <h5>GAP</h5>}
+          {
+          logo 
+            ? <Imgix src={logo.imgix_url} style={styles.logo} sizes="5vw"/> 
+            : <h5>JM</h5>
+          }
           <h1>
             <Link to="/" style={styles.link}>
               {siteTitle}
@@ -122,7 +129,7 @@ class Header extends React.Component {
   }
 
   handleScroll() {
-    let breakpoint = window.innerHeight / 2
+    let breakpoint = window.innerHeight * .7
     if (this.props.breakpoint) {
       breakpoint = this.props.breakpoint
     }

@@ -8,6 +8,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 import { graphql } from "gatsby"
 import { Modal } from 'rsuite'
+import Imgix from "react-imgix"
 
 import ProjectDisplay from '../components/projectDisplay.js'
 import Layout from "../components/layout"
@@ -64,7 +65,7 @@ class Projects extends React.Component {
       }
     }
     if (pageData.splash_image) {
-      styles.header.background = `url(${pageData.splash_image.url})`
+      styles.header.background = `url(${pageData.splash_image.imgix_url}?q=100&auto=format,compress)`
       styles.header.backgroundSize = 'cover'
       styles.header.backgroundPosition = 'center'
     }
@@ -80,7 +81,7 @@ class Projects extends React.Component {
         <section className="page-container">
           <header className="page-header projects" style={styles.header}>
             <div className="header-filter">
-              <h3>Check Out Our Work</h3>
+              <h3>Check Out My Work</h3>
               <p className="page-header-description">{pageData.summary}</p>
             </div>
           </header>
@@ -90,8 +91,9 @@ class Projects extends React.Component {
                 <ProjectDisplay
                   key={project.node.title}
                   title={project.node.title}
-                  description={project.node.metadata.summary}
-                  image={project.node.metadata.image.url}
+                  description={project.node.metadata.description}
+                  summary={project.node.metadata.summary}
+                  imgix_url={project.node.metadata.image.imgix_url}
                   size="tall"
                 />
               )
@@ -109,12 +111,8 @@ class Projects extends React.Component {
               ? <Modal.Body>
                 {this.state.selectedProject.metadata.description}
                 <div className="modal-gallery" style={styles.gallery}>
-                  {this.state.selectedProject.metadata.gallery.map(imageUrl => (
-                    <img
-                      key={imageUrl}
-                      alt={this.state.selectedProject.title}
-                      src={imageUrl}
-                    />
+                  {this.state.selectedProject.metadata.gallery.map(imgixUrl => (
+                    <Imgix src={imgixUrl} key={imgixUrl} alt={this.state.selectedProject.title} sizes="10vw"/>
                   ))}
                 </div>
               </Modal.Body>
@@ -138,7 +136,7 @@ export const query = graphql`
     cosmicjsPages(slug: { eq: "projects" }) {
       metadata {
         splash_image {
-          url
+          imgix_url
         }
         summary
       }
@@ -151,7 +149,7 @@ export const query = graphql`
             date
             gallery
             image {
-              url
+              imgix_url
             }
             summary
             description
@@ -185,7 +183,7 @@ export const query = graphql`
       metadata {
         site_title
         site_logo {
-          url
+          imgix_url
         }
       }
     }
