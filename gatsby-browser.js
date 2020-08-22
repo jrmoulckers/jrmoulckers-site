@@ -5,4 +5,4 @@
  */
 
 // require('rsuite/dist/styles/rsuite.min.css');
-require('rsuite/styles/less/index.less');
+// require('rsuite/styles/less/index.less');

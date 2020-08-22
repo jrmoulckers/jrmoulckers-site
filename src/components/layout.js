@@ -26,7 +26,7 @@ const Layout = ({ children, siteTitle, siteLogo, contact, connect, headerBreakpo
       flexDirection: 'row',
       justifyContent: 'space-around',
       alignItems: 'center',
-      backgroundColor: 'grey',
+      backgroundColor: 'var(--jrm-dark-blue)',
       color: 'white',
     },
     linkContainer: {
@@ -45,7 +45,11 @@ const Layout = ({ children, siteTitle, siteLogo, contact, connect, headerBreakpo
       alignItems: 'center',
     },
     contactLine: {
-      marginBottom: '10px'
+      a: {
+        color: 'white'
+      },
+      marginBottom: '10px',
+      color: 'white',
     }
   }
   return (
@@ -55,13 +59,13 @@ const Layout = ({ children, siteTitle, siteLogo, contact, connect, headerBreakpo
       <footer style={styles.footer}>
         {contact
           ? <div>
-            <h6 style={styles.contactLine}>Phone:
-              <a href={`tel:${contact.country_code ? `+contact.country_code` : ``}${contact.phone_number}`}>
-                {` ${contact.country_code ? `+${contact.country_code}` : null} ${contact.phone_number}`}
+            <h6 style={styles.contactLine}>Phone: 
+              <a href={`tel:${contact.country_code ? `+contact.country_code` : ``}${contact.phone_number}`} style={styles.contactLine}>
+                {`${contact.country_code ? `+${contact.country_code}` : null} ${contact.phone_number}`}
               </a>
             </h6>
             <h6 style={styles.contactLine}>Email:
-              <a href={`mailto:${contact.email}`}> {contact.email}</a>              
+              <a href={`mailto:${contact.email}`} style={styles.contactLine}> {contact.email}</a>              
             </h6>
 
             <h6 style={styles.contactLine}>{contact.address1}</h6>

@@ -31,8 +31,9 @@ class ProjectDisplay extends React.Component {
         background: 'rgba(0, 0, 0, 0.6)',
         position: 'relative',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
         overflowY: 'none',
         transition: '0.3s ease-in-out'
       },
@@ -45,13 +46,16 @@ class ProjectDisplay extends React.Component {
       }
     }
     if (this.props.imgix_url) {
-      styles.container.background = `url(${this.props.imgix_url}?q=100&auto=format,compress)`
+      styles.container.background = `url(${this.props.imgix_url}?w=200&h=200&q=100&auto=format,compress)`
       styles.container.backgroundSize = 'cover'
       styles.container.backgroundPosition = 'center'
     }
     if (this.props.size === 'tall') {
-      styles.container.height = '600px'
-      styles.details.height = '600px'
+      styles.container.height = '400px'
+      styles.container.width = '400px'
+      styles.details.height = '400px'
+      styles.details.width = '400px'
+      styles.container.background = `url(${this.props.imgix_url}?w=400&h=400&q=100&auto=format,compress)`
     }
     if (this.state.hover) {
       styles.details.opacity = '1'

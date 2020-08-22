@@ -1,9 +1,16 @@
   :root {
-    --jrm-orange: #d9401a;
     --jrm-light-blue: #c2d9fc;
-    --jrm-dark-blue: #240063;
     --jrm-dark-blue-opaque: rgba(50, 13, 115, 0.4);
     --jrm-light-grey: #b3b4bd;
+    --jrm-dark-blue: #003049ff;
+    --jrm-red: #d62828ff;
+    --jrm-orange: #f77f00ff;
+    --jrm-yellow: #fcbf49ff;
+    --jrm-beige: #eae2b7ff;
+    --jrm-maroon: #3c0919ff;
+    --jrm-light-grey: #eff1edff;
+    --jrm-green: #717744ff;
+    --tea-light-green: #c4d6b0ff;
   }
 
   html {
@@ -636,7 +643,7 @@
     }
   }
   .section-container.medium {
-    min-height: 400px;
+    min-height: 300px;
     margin-left: auto;
     margin-right: auto;
   }

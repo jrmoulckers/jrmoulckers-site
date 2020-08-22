@@ -60,7 +60,7 @@ class Projects extends React.Component {
         marginTop: '15px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
       }
     }

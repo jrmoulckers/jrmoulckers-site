@@ -44,7 +44,6 @@ class Header extends React.Component {
         zIndex: 100,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         transition: '0.75s ease-in-out',
         background: 'rgba(0, 0, 0, .5)',
@@ -55,10 +54,19 @@ class Header extends React.Component {
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%',
+        margin: '1vh 5vw'
+      },
+      navbody: {
+        position: 'absolute',
+        margin: '0 5vw',
+        right: '0',
+      },
+      navlink: {
+        margin: '0 1vw',
       },
       link: {
         color: `var(--jrm-light-blue)`,
-        textShadow: '0px 0px 1px #ffffff',
+        textShadow: '0px 0px 1px #000000',
         margin: '0 0 0 30px',
         textDecoration: `none`,
       },
@@ -92,36 +100,48 @@ class Header extends React.Component {
             </Link>
           </h1>
         </Navbar.Header>
-        <Navbar.Body>
+        <Navbar.Body style={styles.navbody}>
           <Nav>
             <Nav.Item
-              className={this.state.activeKey.includes('work') ? 'active' : ''}
+              className={this.state.activeKey.includes('home') ? 'active' : ''}
+              style={styles.navlink}
               componentClass={Link}
-              to="/work"
+              to="/"
             >
-              Work
+              Home
             </Nav.Item>
             <Nav.Item
               className={this.state.activeKey.includes('projects') ? 'active' : ''}
+              style={styles.navlink}
               componentClass={Link}
               to="/projects"
             >
               Projects
             </Nav.Item>
             <Nav.Item
+              className={this.state.activeKey.includes('work') ? 'active' : ''}
+              style={styles.navlink}
+              componentClass={Link}
+              to="/work"
+            >
+              Work
+            </Nav.Item>
+            {/* <Nav.Item
               className={this.state.activeKey.includes('about') ? 'active' : ''}
+              style={styles.navlink}
               componentClass={Link}
               to="/about"
             >
               About
-            </Nav.Item>
-            <Nav.Item
+            </Nav.Item> */}
+            {/* <Nav.Item
               className={this.state.activeKey.includes('contact') ? 'active' : ''}
+              style={styles.navlink}
               componentClass={Link}
               to="/#contact"
             >
               Contact
-            </Nav.Item>
+            </Nav.Item> */}
           </Nav>
         </Navbar.Body>
       </Navbar>

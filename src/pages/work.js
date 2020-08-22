@@ -7,8 +7,8 @@ import React from "react"
 import PropTypes from 'prop-types'
 import { graphql } from "gatsby"
 import Imgix from "react-imgix"
+import { Icon } from "@blueprintjs/core"
 
-import { Icon, IconButton } from 'rsuite'
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
@@ -89,7 +89,7 @@ class Work extends React.Component {
           }
         } else {
           return {
-            height: '200px',
+            height: 'auto',
             width: "25%",
             display: 'flex',
             flexDirection: 'row',
@@ -112,9 +112,14 @@ class Work extends React.Component {
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
       },
+      serviceicon: {
+        marginBottom: '.5rem',
+      },
+      toggleserviceicon: {
+        marginTop: '2rem',
+      },
       summary: {
-        width: '20%',
-        maxWidth: '300px',
+        maxWidth: '50%',
         paddingRight: '50px',
         margin: '0 20px',
         textAlign: 'right',
@@ -122,7 +127,7 @@ class Work extends React.Component {
         borderRight: 'thin solid black'
       },
       description: {
-        width: '40%',
+        maxWidth: '25%',
         marginRight: '30px',
         fontSize: '1.0rem'
       },
@@ -167,20 +172,21 @@ class Work extends React.Component {
                 key={service.node.title}
                 className="service-container"
                 style={styles.serviceContainer(serviceData.indexOf(service))}
+                onClick={() => this.handleServiceClick(serviceData.indexOf(service))}
               >
                 <div style={styles.serviceDetails}>
-                  {service.node.metadata.icon ? <Icon icon={service.node.metadata.icon} size="3x" onClick={() => this.handleServiceClick(serviceData.indexOf(service))} /> : null}
-                  <h5 style={styles.detailsName} onClick={() => this.handleServiceClick(serviceData.indexOf(service))}>{service.node.title}</h5>
-                  <p style={styles.detailsDesc} onClick={() => this.handleServiceClick(serviceData.indexOf(service))}>{service.node.metadata.summary}</p>
+                  {service.node.metadata.icon ? <Icon style={styles.serviceicon} icon={service.node.metadata.icon} iconSize={32} /> : null}
+                  <h5 style={styles.detailsName}>{service.node.title}</h5>
+                  <p style={styles.detailsDesc}>{service.node.metadata.summary}</p>
                   {this.state.activeIndex === serviceData.indexOf(service)
-                    ? <div style={styles.serviceExtra}>
-                      <p style={styles.detailsDesc}>{service.node.metadata.description}</p>
-                      <IconButton
-                        circle
-                        icon={<Icon icon="angle-up" />}
-                        onClick={() => this.handleServiceClick(null)}
-                      />
-                    </div>
+                    ? <section>
+                        <div style={styles.serviceExtra}>
+                          <p style={styles.detailsDesc}>{service.node.metadata.description}</p>
+                        </div>
+                        <div style={{ textAlign: "center" }}>
+                          <Icon icon='circle-arrow-up' style={styles.toggleserviceicon} iconSize={32}/>
+                        </div>
+                      </section>
                     : null
                   }
                 </div>
@@ -189,13 +195,13 @@ class Work extends React.Component {
           </section>
           <section className="section-container medium">
             <div style={styles.header}>
-              <h2 style={styles.headerText}>Our Clients</h2>
+              <h2 style={styles.headerText}>My Clients</h2>
             </div>
             <div style={styles.clientList}>
               {clientData.map(client => (
-                <a key={client.node.title} style={styles.clientItem} href={`https://${client.node.metadata.url}`}>
+                <a key={client.node.title} style={styles.clientItem} href={client.node.metadata.url ?? 'javascript:void(0)'}>
                   <p>{client.node.title}</p>
-                  <Imgix src={client.node.metadata.image.imgix_url} alt={client.node.title} style={styles.clientImage} sizes="20vw"/> 
+                  <Imgix src={client.node.metadata.image.imgix_url ?? ''} alt={client.node.title} style={styles.clientImage} height={125}/> 
                 </a>
               ))}
             </div>
@@ -206,7 +212,11 @@ class Work extends React.Component {
   }
 
   handleServiceClick(index) {
-    this.setState({ activeIndex: index })
+    if(index == this.state.activeIndex) {
+      this.setState({ activeIndex: null })
+    } else {
+      this.setState({ activeIndex: index })
+    }
   }
 }
 

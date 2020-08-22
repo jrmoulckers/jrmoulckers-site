@@ -4,6 +4,7 @@ import { Link, graphql } from "gatsby"
 import { Icon } from "@blueprintjs/core"
 import { Button, Input, Message, Animation } from "rsuite"
 
+import '../styling/custom-rsuite-theme.less'
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import ProjectDisplay from '../components/projectDisplay.js'
@@ -118,7 +119,7 @@ class IndexPage extends React.Component {
         overflowX: 'auto',
         color: 'black',
       },
-      serviceIcon: {
+      serviceicon: {
         marginBottom: '.5rem',
       },
       serviceName: {
@@ -151,7 +152,7 @@ class IndexPage extends React.Component {
       }
     }
     if (pageData.splash_image) {
-      styles.splash.background = `url(${pageData.splash_image.imgix_url}?q=100&auto=format,compress)`
+      styles.splash.background = 'var(--jrm-maroon)'//`url(${pageData.splash_image.imgix_url}?q=100&auto=format,compress)`
       styles.splash.backgroundSize = `cover`
       styles.splash.backgroundRepeat = 'no-repeat'
       styles.splash.backgroundPosition = 'center'
@@ -187,12 +188,16 @@ class IndexPage extends React.Component {
                 <div className="wrapper-content services">
                   {serviceData.map(service => (
                     <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
-                      <Icon style={styles.serviceIcon} icon={service.node.metadata.icon} iconSize={32} />
+                      <Icon style={styles.serviceicon} icon={service.node.metadata.icon} iconSize={32} />
                       <h5 style={styles.serviceName}>{service.node.title}</h5>
                       <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
                     </Link>
                   ))}
                 </div>
+                <div className="section-header" style={styles.header}>
+                  <h2 className="section-title" style={styles.title}>My projects</h2>
+                  <p className="projects-description" style={styles.description}>{pageData.project_description}</p>
+                </div>                
                 <div className="wrapper-content projects">
                   {projectData.map(project => (
                     <ProjectDisplay
@@ -213,7 +218,7 @@ class IndexPage extends React.Component {
             <Fade in={this.state.showPeople}>
               <div className="section-wrapper">
                 <div style={styles.header}>
-                  <h2 className="section-title" style={styles.title}>Who We Are</h2>
+                  <h2 className="section-title" style={styles.title}>Who I am</h2>
                   <p style={styles.description}>{pageData.people_description}</p>
                 </div>
                 <div className="wrapper-content people">
@@ -339,6 +344,7 @@ query Index {
       contact_email
       service_description
       people_description
+      project_description
     }
   }
   allCosmicjsPeople {
