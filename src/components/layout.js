@@ -70,7 +70,7 @@ const Layout = ({ children, siteTitle, siteLogo, contact, connect, headerBreakpo
 
             <h6 style={styles.contactLine}>{contact.address1}</h6>
             <h6 style={styles.contactLine}>{contact.address2}</h6>
-            <h6 style={styles.contactLine}>{`${contact.city} ${contact.region}, ${contact.postal_code}`}</h6>
+            <h6 style={styles.contactLine}>{`${contact.city}, ${contact.region} ${contact.postal_code}`}</h6>
           </div>
           : null
         }

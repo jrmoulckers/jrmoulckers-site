@@ -224,7 +224,8 @@ class IndexPage extends React.Component {
                 <div className="wrapper-content people">
                   {peopleData.map(person => {
                     return (
-                      <Link key={person.node.title} to="/about" style={styles.person}>
+                      // <Link key={person.node.title} to="/about" style={styles.person}>
+                      <Link key={person.node.title} to="/" style={styles.person}>
                         <div
                           style={{
                             background: `url(${person.node.metadata.image.imgix_url}?q=100&auto=format,compress)`,
