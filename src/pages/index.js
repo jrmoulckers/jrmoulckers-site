@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { Link, graphql } from "gatsby"
 import { Icon } from "@blueprintjs/core"
 import { Button, Form, Input } from 'antd'
+import { Frame, AnimatePresence } from 'framer'
 import { Animation } from "rsuite"
 
 import '../styling/custom-rsuite-theme.less'
@@ -176,37 +177,49 @@ class IndexPage extends React.Component {
             style={styles.work}
             className="section-container content work"
           >
-            <Fade in={this.state.showWork}>
-              <div className="section-wrapper">
-                <div className="section-header" style={styles.header}>
-                  <h2 className="section-title" style={styles.title}>What I do</h2>
-                  <p className="people-description" style={styles.description}>{pageData.service_description}</p>
-                </div>
-                <div className="wrapper-content services">
-                  {serviceData.map(service => (
-                    <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
-                      <Icon style={styles.serviceicon} icon={service.node.metadata.icon} iconSize={32} />
-                      <h5 style={styles.serviceName}>{service.node.title}</h5>
-                      <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
-                    </Link>
-                  ))}
-                </div>
-                <div className="section-header" style={styles.header}>
-                  <h2 className="section-title" style={styles.title}>My projects</h2>
-                  <p className="projects-description" style={styles.description}>{pageData.project_description}</p>
-                </div>                
-                <div className="wrapper-content projects">
-                  {projectData.map(project => (
-                    <ProjectDisplay
-                      key={project.node.title}
-                      title={project.node.title}
-                      description={project.node.metadata.summary}
-                      imgix_url={project.node.metadata.image.imgix_url}
-                    />
-                  ))}
-                </div>
-              </div>
-            </Fade>
+            <AnimatePresence>
+              {this.state.showWork && (
+                <Frame
+                  initial={{ opacity: 0 }}  
+                  animate={{ opacity: 1 }}  
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1 }}
+                  position="relative"
+                  size="100%"
+                  background="none"
+                >
+                  <div className="section-wrapper">
+                    <div className="section-header" style={styles.header}>
+                      <h2 className="section-title" style={styles.title}>What I do</h2>
+                      <p className="people-description" style={styles.description}>{pageData.service_description}</p>
+                    </div>
+                    <div className="wrapper-content services">
+                      {serviceData.map(service => (
+                        <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
+                          <Icon style={styles.serviceicon} icon={service.node.metadata.icon} iconSize={32} />
+                          <h5 style={styles.serviceName}>{service.node.title}</h5>
+                          <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="section-header" style={styles.header}>
+                      <h2 className="section-title" style={styles.title}>My projects</h2>
+                      <p className="projects-description" style={styles.description}>{pageData.project_description}</p>
+                    </div>                
+                    <div className="wrapper-content projects">
+                      {projectData.map(project => (
+                        <ProjectDisplay
+                          key={project.node.title}
+                          title={project.node.title}
+                          description={project.node.metadata.summary}
+                          imgix_url={project.node.metadata.image.imgix_url}
+                        />
+                      ))}
+                    </div>
+                  </div>                  
+                </Frame>
+              )}
+            </AnimatePresence>
           </section>
           <section
             ref={el => { this.peopleElement = el }}
