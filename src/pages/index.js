@@ -2,15 +2,16 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Link, graphql } from "gatsby"
 import { Icon } from "@blueprintjs/core"
-import { Button, Input, Message, Animation } from "rsuite"
+import { Button, Form, Input } from 'antd'
+import { Animation } from "rsuite"
 
 import '../styling/custom-rsuite-theme.less'
+import './index.less'
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import ProjectDisplay from '../components/projectDisplay.js'
 
-const { Fade, Collapse } = Animation
-
+const { Fade } = Animation
 // Home Page
 class IndexPage extends React.Component {
   constructor() {
@@ -22,10 +23,6 @@ class IndexPage extends React.Component {
       showPeople: false,
       contactHeight: 0,
       showContact: false,
-      userName: '',
-      userEmail: '',
-      userMessage: '',
-      messageSubject: '',
       messageError: false,
     }
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -257,27 +254,47 @@ class IndexPage extends React.Component {
                   <h2 className="section-title" style={styles.title}>Contact Me</h2>
                   <p style={styles.description}>Fill out the form below if you would like to get in touch with me!</p>
                 </div>
-                <form style={styles.contactForm} onSubmit={this.handleContactForm}>
-                  <Collapse in={this.state.messageError}>
-                    <Message type="error" title="Error: Populate All Fields" description="Please provide input to all fields..." />
-                  </Collapse>
+                <Form style={styles.contactForm} onFinish={this.handleContactForm}>
                   <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input name="userName" value={this.state.userName} onChange={this.handleInput} placeholder="Name" />
-                    <Input name="userEmail" value={this.state.userEmail} onChange={this.handleInput} placeholder="Email" style={{marginLeft: "15px"}} />
+                    <Form.Item
+                      name="userName"
+                      rules={[{ required: true, message: 'Please input a name.' }]}
+                      style={{width:'48%'}}
+                    >
+                      <Input placeholder="Name" />
+                    </Form.Item>
+                    <Form.Item
+                      name="userEmail"
+                      rules={[{ required: true, message: 'Please input an email.' }]}
+                      style={{width:'48%'}}
+                    >
+                      <Input placeholder="Email" />
+                    </Form.Item>
                   </div>
-                  <Input name="messageSubject" value={this.state.messageSubject} onChange={this.handleInput} placeholder="Subject" />
-                  <Input
-                    componentClass="textarea"
+                  <Form.Item
+                    name="messageSubject"
+                    rules={[{ required: true, message: 'Please input a subject.' }]}
+                    style={{width:'100%'}}
+                  >
+                    <Input placeholder="Subject" />
+                  </Form.Item>
+                  <Form.Item
                     name="userMessage"
-                    value={this.state.userMessage}
-                    onChange={this.handleInput}
-                    rows={5}
-                    placeholder="Message..."
-                  />
-                  <Button type="submit" appearance="ghost">
-                    Send Mail
-                  </Button>
-                </form>
+                    rules={[{ required: true, message: 'Please input a message.' }]}
+                    style={{width:'100%'}}
+                  >
+                    <Input.TextArea
+                      rows={5}
+                      placeholder="Message..."
+                    />
+                  </Form.Item>
+                  <Form.Item
+                  >
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
               </div>
             </Fade>
           </section>
@@ -312,20 +329,23 @@ class IndexPage extends React.Component {
     }
   }
 
-  handleContactForm(e) {
-    e.preventDefault()
-    if (!this.state.userName || !this.state.userEmail || !this.state.messageSubject || !this.state.userMessage) {
+  handleContactForm(values) {
+    if (!values.userName || !values.userEmail || !values.messageSubject || !values.userMessage) {
       this.setState({ messageError: true })
     } else {
-      window.location.href = `
-        mailto:${this.props.data.cosmicjsPages.metadata.contact_email}
-        ?subject=${this.state.messageSubject}
-        &body=Name :: ${this.state.userName}%0D%0AEmail :: ${this.state.userEmail}%0D%0ASent From :: ${window.location.href},%0D%0A%0D%0A${this.state.userMessage}`
+      console.log("done")
+      window.open(`
+          mailto:${this.props.data.cosmicjsPages.metadata.contact_email}
+          ?subject=${values.messageSubject}
+          &body=Name :: ${values.userName}%0D%0AEmail :: ${values.userEmail}%0D%0ASent From :: ${window.location.href},%0D%0A%0D%0A${values.userMessage}
+        `,
+        '__blank'
+      );
     }
   }
 
-  handleInput(value, e) {
-    const { name } = e.target
+  handleInput(e) {
+    const { name, value } = e.target
     this.setState({ [name]: value })
   }
 }
