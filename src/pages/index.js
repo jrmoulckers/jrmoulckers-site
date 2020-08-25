@@ -3,51 +3,28 @@ import PropTypes from "prop-types"
 import { Link, graphql } from "gatsby"
 import { Icon } from "@blueprintjs/core"
 import { Button, Form, Input } from 'antd'
-import { Frame, AnimatePresence } from 'framer'
-import { Animation } from "rsuite"
 
 import '../styling/custom-rsuite-theme.less'
 import './index.less'
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import ProjectDisplay from '../components/projectDisplay.js'
+import FadeIn from "../components/fadeIn"
 
-const { Fade } = Animation
 // Home Page
 class IndexPage extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      workHeight: 0,
-      showWork: false,
-      peopleHeight: 0,
-      showPeople: false,
-      contactHeight: 0,
-      showContact: false,
-      messageError: false,
-    }
-    this.updateDimensions = this.updateDimensions.bind(this)
-    this.handleScroll = this.handleScroll.bind(this)
-    this.handleContactForm = this.handleContactForm.bind(this)
-    this.handleInput = this.handleInput.bind(this)
-  }
 
-  componentDidMount() {
-    const workHeight = this.workElement.clientHeight
-    const peopleHeight = this.peopleElement.clientHeight
-    const contactHeight = this.contactElement.clientHeight
-    this.setState({ workHeight, peopleHeight, contactHeight })
-    window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener("resize", this.updateDimensions)
-  }
-  componentDidUpdate() {
-    if (this.state.messageError) {
-      window.setTimeout(() => this.setState({ messageError: false }), 3000)
+  handleContactForm(values) {
+    if (values.userName && values.userEmail && values.messageSubject && values.userMessage) {
+      console.log("done")
+      window.open(`
+          mailto:${this.props.data.cosmicjsPages.metadata.contact_email}
+          ?subject=${values.messageSubject}
+          &body=Name :: ${values.userName}%0D%0AEmail :: ${values.userEmail}%0D%0ASent From :: ${window.location.href},%0D%0A%0D%0A${values.userMessage}
+        `,
+        '__blank'
+      );
     }
-  }
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener("resize", this.updateDimensions)
   }
 
   render() {
@@ -70,10 +47,13 @@ class IndexPage extends React.Component {
         justifyContent: 'center',
         alignItems: 'flex-start',
       },
-      splashPhrase: {
+      splashPhraseContainer: {
         width: '70%',
         paddingLeft: '20%',
-        color: '#ffffff',
+      },
+      splashPhrase: {
+        color: 'var(--jrm-light-grey)',
+        fontSize: '2.5rem',
       },
       work: {
         display: 'flex',
@@ -156,113 +136,103 @@ class IndexPage extends React.Component {
       styles.splash.backgroundPosition = 'center'
     }
     return (
-        <Layout
-          siteTitle= {siteData.site_title}
-          siteLogo= {siteData.site_logo}
-          contact={contactData}
-          connect={connectData}
-          headerBreakpoint={headerBreakpoint}
+      <Layout
+        siteTitle= {siteData.site_title}
+        siteLogo= {siteData.site_logo}
+        contact={contactData}
+        connect={connectData}
+        headerBreakpoint={headerBreakpoint}
+      >
+        <SEO title="Home" keywords={[`cosmic js`, `application`, `react`]} />
+        <section style={styles.splash} className="section-container splash">
+          {pageData.splash_phrase
+            ? <div className="splash-phrase" style={styles.splashPhraseContainer}>
+              <h2 style={styles.splashPhrase}>{pageData.splash_phrase}</h2>
+            </div>
+            : null
+          }
+        </section>
+        <section
+          ref={el => { this.workElement = el }}
+          style={styles.work}
+          className="section-container content work"
         >
-          <SEO title="Home" keywords={[`cosmic js`, `application`, `react`]} />
-          <section style={styles.splash} className="section-container splash">
-            {pageData.splash_phrase
-              ? <div className="splash-phrase" style={styles.splashPhrase}>
-                <h2 style={{ fontSize: '2.5rem' }}>{pageData.splash_phrase}</h2>
+          <div className="section-wrapper">
+            <FadeIn threshold={.4}>
+              <div className="section-header" style={styles.header}>
+                <h2 className="section-title" style={styles.title}>What I do</h2>
+                <p className="people-description" style={styles.description}>{pageData.service_description}</p>
               </div>
-              : null
-            }
-          </section>
-          <section
-            ref={el => { this.workElement = el }}
-            style={styles.work}
-            className="section-container content work"
-          >
-            <AnimatePresence>
-              {this.state.showWork && (
-                <Frame
-                  initial={{ opacity: 0 }}  
-                  animate={{ opacity: 1 }}  
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1 }}
-                  position="relative"
-                  size="100%"
-                  background="none"
-                >
-                  <div className="section-wrapper">
-                    <div className="section-header" style={styles.header}>
-                      <h2 className="section-title" style={styles.title}>What I do</h2>
-                      <p className="people-description" style={styles.description}>{pageData.service_description}</p>
-                    </div>
-                    <div className="wrapper-content services">
-                      {serviceData.map(service => (
-                        <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
-                          <Icon style={styles.serviceicon} icon={service.node.metadata.icon} iconSize={32} />
-                          <h5 style={styles.serviceName}>{service.node.title}</h5>
-                          <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="section-header" style={styles.header}>
-                      <h2 className="section-title" style={styles.title}>My projects</h2>
-                      <p className="projects-description" style={styles.description}>{pageData.project_description}</p>
-                    </div>                
-                    <div className="wrapper-content projects">
-                      {projectData.map(project => (
-                        <ProjectDisplay
-                          key={project.node.title}
-                          title={project.node.title}
-                          description={project.node.metadata.summary}
-                          imgix_url={project.node.metadata.image.imgix_url}
-                        />
-                      ))}
-                    </div>
-                  </div>                  
-                </Frame>
-              )}
-            </AnimatePresence>
-          </section>
-          <section
-            ref={el => { this.peopleElement = el }}
-            className="section-container content people"
-          >
-            <Fade in={this.state.showPeople}>
-              <div className="section-wrapper">
-                <div style={styles.header}>
-                  <h2 className="section-title" style={styles.title}>Who I am</h2>
-                  <p style={styles.description}>{pageData.people_description}</p>
-                </div>
-                <div className="wrapper-content people">
-                  {peopleData.map(person => {
-                    return (
-                      // <Link key={person.node.title} to="/about" style={styles.person}>
-                      <Link key={person.node.title} to="/" style={styles.person}>
-                        <div
-                          style={{
-                            background: `url(${person.node.metadata.image.imgix_url}?q=100&auto=format,compress)`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            marginBottom: '14px',
-                            width: '100%',
-                            height: '200px',
-                          }}
-                        />
-                        <h5 style={styles.personName}>{person.node.title}</h5>
-                        <h6 style={styles.personTitle}>{person.node.metadata.job_title}</h6>
-                      </Link>
-                    )
-                  })}
-                </div>
+              <div className="wrapper-content services">
+                {serviceData.map(service => (
+                  <Link to="/work" key={service.node.title} className="service-link" style={styles.service}>
+                    <Icon style={styles.serviceicon} icon={service.node.metadata.icon} iconSize={32} />
+                    <h5 style={styles.serviceName}>{service.node.title}</h5>
+                    <p style={styles.serviceDescription}>{service.node.metadata.summary}</p>
+                  </Link>
+                ))}
               </div>
-            </Fade>
-          </section>
-          <section
-            ref={el => { this.contactElement = el }}
-            name="contact"
-            className="section-container content bottom contact"
-          >
-            <Fade in={this.state.showContact}>
+            </FadeIn>
+            <FadeIn threshold={.4}>
+              <div className="section-header" style={styles.header}>
+                <h2 className="section-title" style={styles.title}>My projects</h2>
+                <p className="projects-description" style={styles.description}>{pageData.project_description}</p>
+              </div>                
+              <div className="wrapper-content projects">
+                {projectData.map(project => (
+                  <ProjectDisplay
+                    key={project.node.title}
+                    title={project.node.title}
+                    description={project.node.metadata.summary}
+                    imgix_url={project.node.metadata.image.imgix_url}
+                  />
+                ))}
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+        <section
+          ref={el => { this.peopleElement = el }}
+          className="section-container content people"
+        >
+          <div className="section-wrapper">
+            <FadeIn threshold={.4}>
+              <div style={styles.header}>
+                <h2 className="section-title" style={styles.title}>Who I am</h2>
+                <p style={styles.description}>{pageData.people_description}</p>
+              </div>
+              <div className="wrapper-content people">
+                {peopleData.map(person => {
+                  return (
+                    // <Link key={person.node.title} to="/about" style={styles.person}>
+                    <Link key={person.node.title} to="/" style={styles.person}>
+                      <div
+                        style={{
+                          background: `url(${person.node.metadata.image.imgix_url}?q=100&auto=format,compress)`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          marginBottom: '14px',
+                          width: '100%',
+                          height: '200px',
+                        }}
+                      />
+                      <h5 style={styles.personName}>{person.node.title}</h5>
+                      <h6 style={styles.personTitle}>{person.node.metadata.job_title}</h6>
+                    </Link>
+                  )
+                })}
+              </div>
+            </FadeIn> 
+          </div>
+        </section>
+        <section
+          ref={el => { this.contactElement = el }}
+          name="contact"
+          className="section-container content bottom contact"
+        >
+          <div className="section-wrapper">
+            <FadeIn threshold={.4}>
               <div className="contact-container">
-                <div className="imageFilter" />
                 <div style={styles.header}>
                   <h2 className="section-title" style={styles.title}>Contact Me</h2>
                   <p style={styles.description}>Fill out the form below if you would like to get in touch with me!</p>
@@ -309,57 +279,11 @@ class IndexPage extends React.Component {
                   </Form.Item>
                 </Form>
               </div>
-            </Fade>
-          </section>
-        </Layout>
+            </FadeIn>
+          </div>
+        </section>
+      </Layout>
     )
-  }
-
-  updateDimensions() {
-    this.setState({
-      workHeight: this.workElement.clientHeight,
-      peopleHeight: this.peopleElement.clientHeight,
-      contactHeight: this.contactElement.clientHeight,
-    })
-  }
-
-  handleScroll() {
-    const yFocus = window.scrollY + window.innerHeight / 3
-    if (yFocus >= window.innerHeight / 2) {
-      this.setState({ showWork: true })
-    } else {
-      this.setState({ showWork: false })
-    }
-    if (yFocus >= (window.innerHeight + this.state.workHeight)) {
-      this.setState({ showPeople: true })
-    } else {
-      this.setState({ showPeople: false })
-    }    
-    if (yFocus >= (window.innerHeight + this.state.workHeight + this.state.peopleHeight)) {
-      this.setState({ showContact: true })
-    } else {
-      this.setState({ showContact: false })
-    }
-  }
-
-  handleContactForm(values) {
-    if (!values.userName || !values.userEmail || !values.messageSubject || !values.userMessage) {
-      this.setState({ messageError: true })
-    } else {
-      console.log("done")
-      window.open(`
-          mailto:${this.props.data.cosmicjsPages.metadata.contact_email}
-          ?subject=${values.messageSubject}
-          &body=Name :: ${values.userName}%0D%0AEmail :: ${values.userEmail}%0D%0ASent From :: ${window.location.href},%0D%0A%0D%0A${values.userMessage}
-        `,
-        '__blank'
-      );
-    }
-  }
-
-  handleInput(e) {
-    const { name, value } = e.target
-    this.setState({ [name]: value })
   }
 }
 

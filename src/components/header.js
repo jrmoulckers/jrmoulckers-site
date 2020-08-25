@@ -65,7 +65,7 @@ class Header extends React.Component {
         margin: '0 1vw',
       },
       link: {
-        color: `var(--jrm-light-blue)`,
+        color: `var(--jrm-light-grey)`,
         textShadow: '0px 0px 1px #000000',
         margin: '0 0 0 30px',
         textDecoration: `none`,

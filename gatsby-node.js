@@ -20,4 +20,21 @@ exports.onCreatePage = ({ page, actions }) => {
   })
 }
 
+// Ensures build does not fail because of absence of browser environment for framer
+exports.onCreateWebpackConfig = ({ stage, rules, loaders, actions }) => {
+  switch (stage) {
+    case 'build-html':
+      actions.setWebpackConfig({
+        module: {
+          rules: [
+            {
+              test: /framer/,
+              use: [loaders.null()]
+            }
+          ]
+        }
+      });
+      break;
+  }
+};
 // You can delete this file if you're not using it
