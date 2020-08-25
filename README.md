@@ -1,6 +1,6 @@
 ## Portfolio site for Jeffrey Moulckers
-My portfolio site displays my research in the best tools for my specific use cases in web development, as well as my favorite tools to use across all of my sites.
-
+This portfolio site displays my research in the best tools for my specific use cases in web development, as well as my favorite tools to use across all of my sites.
+View the live version at https://www.jrmoulckers.com
 ## Build Details
 This site is a React webapp built with Gatsby for speed.
 ### Frontend
