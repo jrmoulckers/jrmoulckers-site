@@ -5,12 +5,11 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { graphql } from "gatsby"
-import { Progress } from 'rsuite'
+import { Progress } from 'antd'
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const { Line } = Progress
 
 class About extends React.Component {
   render() {
@@ -119,9 +118,9 @@ class About extends React.Component {
                   <h4 style={styles.skillName}>{skill.node.title}</h4>
                   <p style={styles.skillDescription}>{skill.node.metadata.description}</p>
                 </div>
-                <Line
+                <Progress
                   percent={skill.node.metadata.progress}
-                  showInfo={false}
+                  status="active"
                   strokeColor="black"
                 />
               </div>

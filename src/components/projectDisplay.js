@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'gatsby'
 
 class ProjectDisplay extends React.Component {
   constructor() {
@@ -10,6 +9,10 @@ class ProjectDisplay extends React.Component {
     }
     this.handleHover = this.handleHover.bind(this)
     this.handleUnHover = this.handleUnHover.bind(this)
+  }
+
+  onClick = () => {
+    this.props.showModal(this.props.title)
   }
 
   render() {
@@ -62,8 +65,8 @@ class ProjectDisplay extends React.Component {
     }
 
     return (
-      <Link
-        to={`/projects?${encodeURI(this.props.title)}`}
+      <div
+        onClick={this.onClick}
         style={styles.container}
         onMouseEnter={this.handleHover}
         onMouseLeave={this.handleUnHover}
@@ -72,7 +75,7 @@ class ProjectDisplay extends React.Component {
           <h5 style={styles.title}>{this.props.title}</h5>
           <p style={styles.summary}>{this.props.summary}</p>
         </div>
-      </Link>
+      </div>
     )
   }
 
@@ -90,6 +93,7 @@ ProjectDisplay.propTypes = {
   summary: PropTypes.string,
   imgix_url: PropTypes.string,
   size: PropTypes.string,
+  showModal: PropTypes.func,
 }
 
 export default ProjectDisplay

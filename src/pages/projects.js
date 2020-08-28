@@ -4,10 +4,10 @@
  * This will take a prop composed of our portfolio projects and 
  * iterate over them to display data when appropriate. 
  */
-import React from "react"
+import React, { Fragment } from "react"
 import PropTypes from 'prop-types'
 import { graphql } from "gatsby"
-import { Modal } from 'rsuite'
+import { Modal } from 'antd'
 import Imgix from "react-imgix"
 
 import ProjectDisplay from '../components/projectDisplay.js'
@@ -19,7 +19,8 @@ class Projects extends React.Component {
     super()
     this.state = {
       selectedProject: {},
-      modalOpen: false
+      modalOpen: false,
+      modalProjectName: null,
     }
   }
 
@@ -95,27 +96,33 @@ class Projects extends React.Component {
                   summary={project.node.metadata.summary}
                   imgix_url={project.node.metadata.image.imgix_url}
                   size="tall"
+                  showModal={this.showModal}
                 />
               )
             })}
           </div>
-          <Modal style={styles.modal} show={this.state.modalOpen} onHide={this.handleClose} size="md">
+          <Modal 
+            style={styles.modal} 
+            title={this.state.selectedProject.title}
+            visible={this.state.modalOpen} 
+            footer={null} 
+            onCancel={this.closeModal}
+          >
             {this.state.selectedProject.title
-              ? <Modal.Header>
-                <Modal.Title>{this.state.selectedProject.title}</Modal.Title>
-                <p>{this.state.selectedProject.metadata.date}</p>
-              </Modal.Header>
+              ? <Fragment>
+                  <p>{this.state.selectedProject.metadata.date}</p>
+                </Fragment>
               : null
             }
             {this.state.selectedProject.title
-              ? <Modal.Body>
+              ? <Fragment>
                 {this.state.selectedProject.metadata.description}
                 <div className="modal-gallery" style={styles.gallery}>
                   {this.state.selectedProject.metadata.gallery.map(imgixUrl => (
                     <Imgix src={imgixUrl} key={imgixUrl} alt={this.state.selectedProject.title} sizes="10vw"/>
                   ))}
                 </div>
-              </Modal.Body>
+              </Fragment>
               : null
             }
           </Modal>
@@ -124,10 +131,26 @@ class Projects extends React.Component {
     )
   }
 
-  handleClose() {
-    if (typeof window !== 'undefined') {
-      window.location.href = window.location.protocol + window.location.pathname
+  showModal = (projectName) => {
+    const allProjects = this.props.data.allCosmicjsProjects.edges
+    let selectedProject
+    for (const i in allProjects) {
+      if (allProjects[i].node.title === projectName) {
+        selectedProject = allProjects[i].node
+      }
     }
+    this.setState({
+      modalOpen: true,
+      modalProjectName: {projectName},
+      selectedProject: selectedProject,
+    })
+  }
+
+  closeModal = e => {
+    console.log(e);
+    this.setState({
+      modalOpen: false,
+    })
   }
 }
 
