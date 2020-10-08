@@ -47,6 +47,9 @@ class Work extends React.Component {
         padding: '20px',
         borderBottom: 'thin solid black',
       },
+      splashPhrase: {
+        color: 'var(--jrm-light-grey)',
+      },
       serviceList: {
         width: '80vw',
         flexDirection: 'row',
@@ -155,7 +158,7 @@ class Work extends React.Component {
         <section className="page-container work">
           <header className="page-header work" style={styles.pageHeader}>
             <div className="header-filter">
-              <h3>What I Do</h3>
+              <h3 style={styles.splashPhrase}>What I Do</h3>
               {pageData.splash_phrase
                 ? <p className="page-header-description">{pageData.splash_phrase}</p>
                 : null

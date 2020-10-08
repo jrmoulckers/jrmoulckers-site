@@ -27,6 +27,9 @@ class About extends React.Component {
       pageHeader: {
         padding: '0',
       },
+      splashPhrase: {
+        color: 'var(--jrm-light-grey)',
+      },
       summary: {
         width: '25%',
         maxWidth: '300px',
@@ -100,7 +103,7 @@ class About extends React.Component {
         <section className="page-container about">
           <header className="page-header about" style={styles.pageHeader}>
             <div className="header-filter">
-              <h3>Who We Are</h3>
+              <h3 style={styles.pageHeader}>Who We Are</h3>
               {pageData.splash_phrase
                 ? <p className="page-header-description">{pageData.splash_phrase}</p>
                 : null
@@ -192,8 +195,8 @@ export const query = graphql`
         node {
           title
           metadata {
-            progress
             description
+            progress
           }
         }
       }

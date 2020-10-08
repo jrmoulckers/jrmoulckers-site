@@ -7,6 +7,7 @@ module.exports = {
     author: `@jrmoulckers`,
   },
   plugins: [
+    `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-antd`,
       options: {
@@ -63,6 +64,7 @@ module.exports = {
         objectTypes: [`pages`, `people`, `services`, `projects`, `settings`, `connects`, `skills`, `clients`, `contacts`],
         apiAccess: {
           read_key: process.env.COSMIC_READ_KEY,
+          write_key: process.env.COSMIC_WRITE_KEY,
         }
       }
     },

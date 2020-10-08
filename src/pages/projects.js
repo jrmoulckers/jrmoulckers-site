@@ -54,6 +54,9 @@ class Projects extends React.Component {
       header: {
         padding: '0',
       },
+      splashPhrase: {
+        color: 'var(--jrm-light-grey)',
+      },
       modal: {
         top: '50px'
       },
@@ -82,7 +85,7 @@ class Projects extends React.Component {
         <section className="page-container">
           <header className="page-header projects" style={styles.header}>
             <div className="header-filter">
-              <h3>Check Out My Work</h3>
+              <h3 style={styles.splashPhrase}>Check Out My Work</h3>
               <p className="page-header-description">{pageData.summary}</p>
             </div>
           </header>
